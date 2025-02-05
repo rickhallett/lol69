@@ -2,6 +2,8 @@ import random
 import os
 import time
 import argparse
+from colorama import init, Fore, Style
+init(autoreset=True)
 
 # Add these new classes
 class Dice:
@@ -25,10 +27,12 @@ class ConsolePrinter:
         
     @staticmethod
     def print_table(rounds_results):
-        print("{:<6} {:<7} {:<7} {:<20} {:<20}".format(
-            "Round", "Dice 1", "Dice 2", "Total Dice Score", "Cumulative Dice Score"))
+        header = "{:<6} {:<7} {:<7} {:<20} {:<20}".format(
+            "Round", "Dice 1", "Dice 2", "Total Dice Score", "Cumulative Dice Score")
+        print(Fore.CYAN + Style.BRIGHT + header + Style.RESET_ALL)
         for r, d1, d2, tot, cum in rounds_results:
-            print("{:<6} {:<7} {:<7} {:<20} {:<20}".format(r, d1, d2, tot, cum))
+            row = "{:<6} {:<7} {:<7} {:<20} {:<20}".format(r, d1, d2, tot, cum)
+            print(Fore.YELLOW + row + Style.RESET_ALL)
 
 
 class DiceGame:
@@ -66,9 +70,13 @@ class DiceGame:
             elif not self.interactive:
                 time.sleep(self.round_delay)
         if self.cumulative_score == self.target_score:
-            print("\nCongratulations! You hit {} and win!".format(self.target_score))
+            print("\n" + Fore.GREEN + Style.BRIGHT +
+                "Congratulations! You hit {} and win!".format(self.target_score) +
+                Style.RESET_ALL)
         else:
-            print("\nGame resulted in", self.cumulative_score)
+            print("\n" + Fore.RED +
+                "Game resulted in {}".format(self.cumulative_score) +
+                Style.RESET_ALL)
         return {"cumulative_score": self.cumulative_score, "rounds": self.rounds_results}
 
 class GameSimulator:
@@ -92,11 +100,11 @@ class GameSimulator:
     def print_statistics(self):
         total_games = len(self.games)
         wins = sum(1 for game in self.games if game["cumulative_score"] == 69)
-        print("\nSimulation Statistics:")
-        print("Total games simulated:", total_games)
-        print("Number of winning games (score 69):", wins)
         avg = sum(game["cumulative_score"] for game in self.games) / total_games
-        print("Average cumulative score:", avg)
+        print("\n" + Fore.MAGENTA + "Simulation Statistics:" + Style.RESET_ALL)
+        print(Fore.MAGENTA + "Total games simulated: " + str(total_games) + Style.RESET_ALL)
+        print(Fore.MAGENTA + "Number of winning games (score 69): " + str(wins) + Style.RESET_ALL)
+        print(Fore.MAGENTA + "Average cumulative score: " + str(avg) + Style.RESET_ALL)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Dice Rolling CLI Game")
