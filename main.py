@@ -29,10 +29,10 @@ def simulate_game(interactive_round=False, round_delay=0.5):
         print("{:<6} {:<7} {:<7} {:<20} {:<20}".format("Round", "Dice 1", "Dice 2", "Total Dice Score", "Cumulative Dice Score"))
         for r, d1, d2, tot, cum in rounds_results:
             print("{:<6} {:<7} {:<7} {:<20} {:<20}".format(r, d1, d2, tot, cum))
-        if interactive_round:
+        if interactive_round and turn < 10:
             _ = input("go hard, go soft, go dirty? (h/s/d): ")
-            time.sleep(round_delay)  # slight tactile delay after the input
-        else:
+            time.sleep(round_delay)
+        elif not interactive_round:
             time.sleep(round_delay)
     if cumulative_score == 69:
         print("\nCongratulations! You hit 69 and win!")
